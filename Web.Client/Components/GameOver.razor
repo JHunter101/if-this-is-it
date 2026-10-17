@@ -1,0 +1,16 @@
+﻿@inject IGameStateService GameService
+
+<Loader Value="@GameService.Session">
+    <div>
+        <Column Align="AlignItemsClass.Center">
+            <Heading Level="2">this is really it</Heading>
+            <Button Text="main menu" OnClick="HandleReturnToMainMenu" />
+        </Column>
+    </div>
+</Loader>
+
+@code {
+    [Parameter, EditorRequired] public EventCallback OnReturnToMainMenu { get; set; }
+
+    private async Task HandleReturnToMainMenu() => await OnReturnToMainMenu.InvokeAsync();
+}

@@ -1,0 +1,43 @@
+﻿@page "/"
+@using Beauo.Components.Core
+@using Beauo.Components.Core.TransitionPage
+@using Web.Client.Components
+@inject IGameStateService GameService
+
+<div>
+    <BeauoPage NoScroll>
+        <PageTransition ActiveKey="@GetCurrentViewKey()">
+            <PageTransitionPage Key="@SessionState.MainMenu">
+                <MainMenu OnStartGame="HandleStartGameAsync" />
+            </PageTransitionPage>
+
+            <PageTransitionPage Key="@SessionState.InProgress">
+                <GamePlayView OnNextPrompt="HandleNextPrompt" />
+            </PageTransitionPage>
+
+            <PageTransitionPage Key="@SessionState.Over">
+                <GameOver OnReturnToMainMenu="HandleReturnToMainMenu" />
+            </PageTransitionPage>
+            </PageTransition>
+    </BeauoPage>
+</div>
+
+@code {
+
+    private async Task HandleStartGameAsync(GameSettings settings)
+    {
+        await GameService.StartNewGameAsync(settings);
+    }
+
+    private void HandleNextPrompt()
+    {
+        GameService.NextPrompt();
+    }
+
+    private void HandleReturnToMainMenu()
+    {
+        GameService.ClearSession();
+    }
+
+    private SessionState GetCurrentViewKey() => GameService.Session?.GameState ?? SessionState.MainMenu;
+}

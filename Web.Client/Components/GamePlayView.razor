@@ -1,0 +1,27 @@
+﻿@using Beauo.Components.Core.TransitionPage
+@inject IGameStateService GameService
+
+<Loader Value="@GameService.Session">
+    <SessionProgressBar />
+    <PageTransition ActiveKey="@GetStateKey()">
+        @foreach (var depth in Enum.GetValues<PromptDepth>())
+        {
+            <PageTransitionPage Key="@depth">
+                <PromptDisplay State="@depth"
+                               Prompt="@GameService.Session?.CurrentPrompt"
+                               OnNextPrompt="HandleNextPrompt" />
+            </PageTransitionPage>
+        }
+    </PageTransition>
+</Loader>
+
+@code {
+    [Parameter, EditorRequired] public EventCallback OnNextPrompt { get; set; }
+
+    private Task HandleNextPrompt()
+    {
+        return OnNextPrompt.InvokeAsync();
+    }
+
+    private PromptDepth GetStateKey() => GameService.Session?.PromptState ?? PromptDepth.Strangers;
+}

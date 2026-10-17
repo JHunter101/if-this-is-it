@@ -1,0 +1,13 @@
+﻿<div>
+    <Column>
+        <Heading Level="1" Size="TextSizeClass.Huge">if this is it</Heading>
+
+        <Button Text="are we really strangers?" OnClick="HandleStartGameAsync" />
+    </Column>
+</div>
+
+@code {
+    [Parameter, EditorRequired] public EventCallback<GameSettings> OnStartGame { get; set; }
+
+    private async Task HandleStartGameAsync() => await OnStartGame.InvokeAsync(new());
+}

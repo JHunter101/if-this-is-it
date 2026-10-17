@@ -1,0 +1,45 @@
+﻿@using Web.Client.Extensions
+@implements IDisposable
+@inject IGameStateService GameService
+
+<div class="session-progress-bar">
+    <div class="progress-track">
+        @foreach (var state in _states)
+        {
+            var isReached = GameService.Session?.PromptState >= state;
+            var isCurrent = GameService.Session?.PromptState == state;
+            var stateProgress = GameService.Session?.GetProgress(state) ?? 0;
+
+            <div class="progress-segment">
+                <div class="segment-track">
+                    <div class="segment-fill"
+                         style="--segment-progress: @(stateProgress * 100)%;">
+                    </div>
+                </div>
+
+                <div class="segment-label @(isReached ? "active" : "")">
+                    @state.ToDisplayText()
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    private readonly PromptDepth[] _states = Enum.GetValues<PromptDepth>();
+
+    protected override void OnInitialized()
+    {
+        GameService.OnChange += HandleStateChanged;
+    }
+
+    private void HandleStateChanged()
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        GameService.OnChange -= HandleStateChanged;
+    }
+}

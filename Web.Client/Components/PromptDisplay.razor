@@ -1,0 +1,23 @@
+﻿@using Web.Client.Extensions
+
+<div class="prompt-card" @onclick="OnNextPrompt">
+    <Column Align="AlignItemsClass.Center" Gap="@GapClass.Large" Justify="@JustifyContentClass.SpaceBetween">
+        <Heading Level="2" Size="TextSizeClass.Medium" Color="BgColorVar.Red.Accent">
+            @State.ToDisplayText()
+        </Heading>
+
+        <Text Size="TextSizeClass.Large" Color="BgColorVar.Red.Accent" Align="TextAlignClass.Center">
+            @Prompt
+        </Text>
+
+        <Text Size="TextSizeClass.Small" Color="BgColorVar.Red.Accent">
+            if this is it
+        </Text>
+    </Column>
+</div>
+
+@code {
+    [Parameter, EditorRequired] public PromptDepth State { get; set; }
+    [Parameter, EditorRequired] public string Prompt { get; set; }
+    [Parameter, EditorRequired] public EventCallback OnNextPrompt { get; set; }
+}
