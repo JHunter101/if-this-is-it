@@ -24,15 +24,15 @@ public sealed class GameFlowSteps(BlazorTestContext context, IGameStateService s
         Repository.SetPrompts(["S1"], ["I1"], ["C1"]);
         await StateService.StartNewGameAsync(new GameSettings());
 
-        ClickPromptCard(3);
+        await ClickPromptCard(3);
         AssertSessionState(SessionState.Over);
     }
 
     [When("I click the prompt card")]
-    public void WhenIClickThePromptCard() => ClickPromptCard();
+    public async Task WhenIClickThePromptCardAsync() => await ClickPromptCard();
 
     [When("I click the prompt card {int} times")]
-    public void WhenIClickThePromptCardTimes(int count) => ClickPromptCard(count);
+    public async Task WhenIClickThePromptCardTimesAsync(int count) => await ClickPromptCard(count);
 
     [When("I click the 'main menu' button")]
     public void WhenIClickTheMainMenuButton() => ClickButton("main menu");

@@ -1,23 +1,129 @@
-﻿@using Web.Client.Extensions
+﻿@inject IJSRuntime JS
 
-<div class="prompt-card" @onclick="OnNextPrompt">
-    <Column Align="AlignItemsClass.Center" Gap="@GapClass.Large" Justify="@JustifyContentClass.SpaceBetween">
-        <Heading Level="2" Size="TextSizeClass.Medium" Color="BgColorVar.Red.Accent">
-            @State.ToDisplayText()
-        </Heading>
+<div @ref="_container"
+     class="prompt-card-container"
+     @onpointerdown="OnPointerDown"
+     @onpointermove="OnPointerMove"
+     @onpointerup="OnPointerUp"
+     @onpointercancel="OnPointerCancel">
 
-        <Text Size="TextSizeClass.Large" Color="BgColorVar.Red.Accent" Align="TextAlignClass.Center">
-            @Prompt
-        </Text>
+    <PromptCard @key="@Prompt"
+                State="@State"
+                Prompt="@Prompt"
+                Class="@CurrentCardClass"
+                Style="@CardStyle" />
 
-        <Text Size="TextSizeClass.Small" Color="BgColorVar.Red.Accent">
-            if this is it
-        </Text>
-    </Column>
+    @if (NextPrompt != null)
+    {
+        <PromptCard @key="@NextPrompt"
+                    State="@State"
+                    Prompt="@NextPrompt"
+                    Class="@NextCardClass" />
+    }
 </div>
 
 @code {
     [Parameter, EditorRequired] public PromptDepth State { get; set; }
     [Parameter, EditorRequired] public string Prompt { get; set; }
+    [Parameter, EditorRequired] public string? NextPrompt { get; set; }
     [Parameter, EditorRequired] public EventCallback OnNextPrompt { get; set; }
+
+    private ElementReference _container;
+
+    private double _dragX;
+    private double _dragY;
+    private double _startX;
+    private double _startY;
+
+    private bool _isDragging;
+    private bool _isExiting;
+
+    private const double Threshold = 400;
+    private const int AnimationDuration = 350;
+
+    private string CurrentCardClass => _isExiting ? "current-card exiting-card" : "current-card";
+
+    private string NextCardClass => _isExiting ? "next-card promoted-card" : "next-card";
+
+    private string CardStyle =>
+        $"transform: translate({_dragX}px, {_dragY}px) " +
+        $"rotate({_dragX * 0.05}deg); " +
+        $"transition: {(_isDragging ? "none" : "transform 0.35s cubic-bezier(0.16, 1, 0.3, 1)")};";
+
+    private async Task OnPointerDown(PointerEventArgs e)
+    {
+        if (_isExiting)
+        {
+            return;
+        }
+
+        _isDragging = true;
+        _startX = e.ClientX - _dragX;
+        _startY = e.ClientY - _dragY;
+
+        await JS.InvokeVoidAsync("promptSwipe.capture", _container, e.PointerId);
+    }
+
+    private void OnPointerMove(PointerEventArgs e)
+    {
+        if (!_isDragging || _isExiting)
+        {
+            return;
+        }
+
+        _dragX = e.ClientX - _startX;
+        _dragY = e.ClientY - _startY;
+    }
+
+    private async Task OnPointerUp(PointerEventArgs e)
+    {
+        if (!_isDragging || _isExiting)
+        {
+            return;
+        }
+
+        _isDragging = false;
+
+        double distance = Math.Sqrt(_dragX * _dragX + _dragY * _dragY);
+
+        if (distance < Threshold)
+        {
+            ResetPosition();
+            return;
+        }
+
+        _isExiting = true;
+
+        double length = Math.Sqrt(_dragX * _dragX + _dragY * _dragY);
+
+        double directionX = _dragX / length;
+        double directionY = _dragY / length;
+
+        const double exitDistance = 3000;
+
+        _dragX += directionX * exitDistance;
+        _dragY += directionY * exitDistance;
+
+        await Task.Delay(AnimationDuration);
+
+        await OnNextPrompt.InvokeAsync();
+
+        ResetPosition();
+        _isExiting = false;
+    }
+
+    private void OnPointerCancel(PointerEventArgs e)
+    {
+        if (_isExiting)
+            return;
+
+        _isDragging = false;
+        ResetPosition();
+    }
+
+    private void ResetPosition()
+    {
+        _dragX = 0;
+        _dragY = 0;
+    }
 }

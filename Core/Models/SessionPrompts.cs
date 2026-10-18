@@ -28,6 +28,9 @@ public class SessionPrompts(IEnumerable<string> strangers, IEnumerable<string> s
         }
     }
 
+    public string? PeekNext()
+        => GetQueue(CurrentLevel).TryPeek(out string? prompt) ? prompt : null;
+
     internal int GetQuestionsLeft(PromptDepth promptDepth) => GetQueue(promptDepth).Count;
 
     private Queue<string> GetQueue(PromptDepth level)
