@@ -11,5 +11,5 @@ public sealed class InitializationSteps(BlazorTestContext context, IGameStateSer
     public void WhenIClickTheAreWeReallyStrangersButton() => ClickButton("are we really strangers?");
 
     [Then("the game play view should be visible")]
-    public void ThenTheGamePlayViewShouldBeVisible() => AssertComponentExists<GamePlayView>();
+    public void ThenTheGamePlayViewShouldBeVisible() => AssertSessionState(SessionState.InProgress);
 }

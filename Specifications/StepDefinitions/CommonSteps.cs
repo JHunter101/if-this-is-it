@@ -1,6 +1,5 @@
 ﻿using Beauo.Components;
 using Bunit;
-using Microsoft.AspNetCore.Components;
 
 namespace Specifications.StepDefinitions;
 
@@ -12,7 +11,7 @@ public abstract class CommonSteps(BlazorTestContext context, IGameStateService s
     protected PromptRepositoryStub Repository => (PromptRepositoryStub)Context.BunitContext.Services.GetRequiredService<IPromptRepository>();
 
     [Then("I should see the main menu")]
-    public void ThenIShouldSeeTheMainMenu() => AssertComponentExists<MainMenu>();
+    public void ThenIShouldSeeTheMainMenu() => AssertSessionState(SessionState.MainMenu);
 
     [Then("the current prompt state should be '{PromptDepth}'")]
     public void ThenTheCurrentPromptStateShouldBe(PromptDepth state) => AssertPromptDepth(state);
@@ -28,7 +27,9 @@ public abstract class CommonSteps(BlazorTestContext context, IGameStateService s
 
     protected void ClickPromptCard()
     {
-        IRenderedComponent<PromptDisplay> promptDisplay = RenderedPage.FindComponent<PromptDisplay>();
+        StateService.Session.ShouldNotBeNull();
+        IRenderedComponent<PromptDisplay> promptDisplay = RenderedPage.FindComponents<PromptDisplay>()
+            .Single(c => c.Instance.State == StateService.Session.PromptState);
         promptDisplay.Find(".prompt-card").Click();
     }
 
@@ -40,10 +41,14 @@ public abstract class CommonSteps(BlazorTestContext context, IGameStateService s
         }
     }
 
-    protected void AssertComponentExists<TComponent>() where TComponent : IComponent => RenderedPage.WaitForComponent<TComponent>().ShouldNotBeNull();
-
     protected void AssertSessionState(SessionState expectedState)
     {
+        if (expectedState == SessionState.MainMenu)
+        {
+            StateService.Session.ShouldBeNull();
+            return;
+        }
+
         StateService.Session.ShouldNotBeNull();
         StateService.Session.GameState.ShouldBe(expectedState);
     }

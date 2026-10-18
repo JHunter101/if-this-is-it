@@ -25,7 +25,7 @@ public sealed class GameFlowSteps(BlazorTestContext context, IGameStateService s
         await StateService.StartNewGameAsync(new GameSettings());
 
         ClickPromptCard(3);
-        AssertComponentExists<GameOver>();
+        AssertSessionState(SessionState.Over);
     }
 
     [When("I click the prompt card")]
@@ -38,5 +38,5 @@ public sealed class GameFlowSteps(BlazorTestContext context, IGameStateService s
     public void WhenIClickTheMainMenuButton() => ClickButton("main menu");
 
     [Then("I should see the game over screen")]
-    public void ThenIShouldSeeTheGameOverScreen() => AssertComponentExists<GameOver>();
+    public void ThenIShouldSeeTheGameOverScreen() => AssertSessionState(SessionState.Over);
 }

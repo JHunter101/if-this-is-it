@@ -23,10 +23,20 @@ public sealed class SessionPromptsTests
     }
 
     [TestMethod]
-    public void Next_WhenAllLevelsEmpty_ReturnsNullAndSetsLevelToIntimate()
+    public void Next_WhenEarlierLevelsEmpty_ReturnsIntimatePromptAndSetsLevelToIntimate()
     {
         SessionPrompts sut = Sut(strangers: [], interlinked: [], intimate: ["Q1"]);
         sut.Next().ShouldBe("Q1");
+        sut.CurrentLevel.ShouldBe(PromptDepth.Intimate);
+    }
+
+    [TestMethod]
+    public void Next_WhenAllLevelsEmpty_ReturnsNullAndKeepsLevelAtIntimate()
+    {
+        SessionPrompts sut = Sut(strangers: [], interlinked: [], intimate: []);
+        sut.Next().ShouldBeNull();
+        sut.CurrentLevel.ShouldBe(PromptDepth.Intimate);
+        sut.Next().ShouldBeNull();
         sut.CurrentLevel.ShouldBe(PromptDepth.Intimate);
     }
 

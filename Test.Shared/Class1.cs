@@ -15,5 +15,9 @@ public static class EnumExtensionTest
 
     public static void VerifyInvalidValueThrows<TEnum>(Action<TEnum> extension)
         where TEnum : struct, Enum
-        => Should.Throw<ArgumentOutOfRangeException>(() => extension((TEnum)(object)999));
+    {
+        var invalidValue = (TEnum)Enum.ToObject(typeof(TEnum), sbyte.MaxValue);
+        Enum.IsDefined(invalidValue).ShouldBeFalse();
+        Should.Throw<ArgumentOutOfRangeException>(() => extension(invalidValue));
+    }
 }
