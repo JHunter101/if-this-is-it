@@ -2,7 +2,7 @@
 
 namespace Test.Shared;
 
-public static class EnumExtensionTest
+public static class EnumExtensionTestSupport
 {
     public static void VerifyCanProcessAllKnown<TEnum>(Action<TEnum> action)
         where TEnum : struct, Enum
