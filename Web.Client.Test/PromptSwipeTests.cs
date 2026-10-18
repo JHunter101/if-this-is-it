@@ -21,9 +21,9 @@ public sealed class PromptDisplayTests : BunitContext
 
         string style = cut.Find(".current-card").GetAttribute("style").ShouldNotBeNull();
 
-        style!.ShouldContain("translate(50px, 20px)");
-        style!.ShouldContain("rotate(2,5deg)");
-        style!.ShouldContain("transition: none");
+        style.ShouldContain("translate(50px, 20px)");
+        style.ShouldContain("rotate(2.5deg)");
+        style.ShouldContain("transition: none");
     }
 
     [TestMethod]

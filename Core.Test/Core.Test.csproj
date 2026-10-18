@@ -26,5 +26,8 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 	</ItemGroup>
-	
+	<ItemGroup>
+		<Compile Include="../Test.Shared/TestAssembly.cs"
+				 Link="TestAssembly.cs" />
+	</ItemGroup>
 </Project>
