@@ -6,6 +6,7 @@
     <Project Path="Core.Test/Core.Test.csproj" Id="37693fac-33c7-45f2-b6ea-4a4ea9719e32" />
     <Project Path="Specifications/Specifications.csproj" Id="3a1ee4cf-3632-4c2e-b8fa-e8c9a1119ab2" />
     <Project Path="Test.Shared/Test.Shared.csproj" Id="73e650a9-8f28-4cc8-a7ad-ad01c5c53c0d" />
+    <Project Path="Web.Client.Test/Web.Client.Test.csproj" Id="014b448a-3437-4ea4-840a-10f00682cb5d" />
   </Folder>
   <Project Path="Core/Core.csproj" />
   <Project Path="Web.Client/Web.Client.csproj" />

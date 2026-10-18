@@ -27,11 +27,11 @@ public abstract class CommonSteps(BlazorTestContext context, IGameStateService s
 
     protected async Task ClickPromptCard() => StateService.NextPrompt();
 
-    protected void ClickPromptCard(int times)
+    protected async Task ClickPromptCard(int times)
     {
         for (int i = 0; i < times; i++)
         {
-            ClickPromptCard();
+            await ClickPromptCard();
         }
     }
 
