@@ -36,3 +36,6 @@ desktop.ini
 
 # Keep this file
 !wwwroot/css/app.css
+
+# ReqNRoll
+*.feature.cs

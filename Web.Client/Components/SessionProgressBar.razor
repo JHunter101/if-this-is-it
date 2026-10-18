@@ -7,7 +7,6 @@
         @foreach (var state in _states)
         {
             var isReached = GameService.Session?.PromptState >= state;
-            var isCurrent = GameService.Session?.PromptState == state;
             var stateProgress = GameService.Session?.GetProgress(state) ?? 0;
 
             <div class="progress-segment">
