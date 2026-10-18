@@ -5,17 +5,18 @@ public class GameSession(GameSettings settings, SessionPrompts prompts)
     private readonly SessionPrompts _prompts = prompts;
     public GameSettings Settings { get; } = settings;
     public string? CurrentPrompt { get; private set; }
-
+    public string? NextPrompt { get; private set; }
     public SessionState GameState { get; private set; } = SessionState.InProgress;
     public PromptDepth PromptState => _prompts.CurrentLevel;
 
-    internal void NextPrompt()
+    internal void Next()
     {
         string? next = _prompts.Next();
 
         if (next is not null)
         {
             CurrentPrompt = next;
+            NextPrompt = _prompts.PeekNext();
         }
         else
         {

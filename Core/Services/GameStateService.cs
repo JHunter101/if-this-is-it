@@ -34,7 +34,7 @@ public class GameStateService(IPromptRepository promptRepository) : IGameStateSe
 
     public void NextPrompt()
     {
-        Session?.NextPrompt();
+        Session?.Next();
         OnChange?.Invoke();
     }
 

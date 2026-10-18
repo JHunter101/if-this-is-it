@@ -25,13 +25,7 @@ public abstract class CommonSteps(BlazorTestContext context, IGameStateService s
         button.Find("button").Click();
     }
 
-    protected void ClickPromptCard()
-    {
-        StateService.Session.ShouldNotBeNull();
-        IRenderedComponent<PromptDisplay> promptDisplay = RenderedPage.FindComponents<PromptDisplay>()
-            .Single(c => c.Instance.State == StateService.Session.PromptState);
-        promptDisplay.Find(".prompt-card").Click();
-    }
+    protected async Task ClickPromptCard() => StateService.NextPrompt();
 
     protected void ClickPromptCard(int times)
     {

@@ -6,9 +6,10 @@
     <PageTransition ActiveKey="@GetStateKey()">
         @foreach (var depth in Enum.GetValues<PromptDepth>())
         {
-            <PageTransitionPage Key="@depth">
+            <PageTransitionPage Key="@depth" HideExiting>
                 <PromptDisplay State="@depth"
                                Prompt="@GameService.Session?.CurrentPrompt"
+                               NextPrompt="@GameService.Session?.NextPrompt"
                                OnNextPrompt="HandleNextPrompt" />
             </PageTransitionPage>
         }

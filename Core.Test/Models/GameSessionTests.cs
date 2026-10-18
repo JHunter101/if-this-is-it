@@ -10,7 +10,7 @@ public sealed class GameSessionTests
     public void NextPrompt_WhenPromptAvailable_SetsCurrentPrompt()
     {
         GameSession sut = Sut(strangers: ["Q1"]);
-        sut.NextPrompt();
+        sut.Next();
         sut.CurrentPrompt.ShouldBe("Q1");
         sut.GameState.ShouldBe(SessionState.InProgress);
     }
@@ -19,7 +19,7 @@ public sealed class GameSessionTests
     public void NextPrompt_WhenNoPromptsLeft_SetsStateToOver()
     {
         GameSession sut = Sut();
-        sut.NextPrompt();
+        sut.Next();
         sut.CurrentPrompt.ShouldBeNull();
         sut.GameState.ShouldBe(SessionState.Over);
     }
@@ -38,7 +38,7 @@ public sealed class GameSessionTests
 
         for (int i = 0; i <= 5; i++)
         {
-            sut.NextPrompt();
+            sut.Next();
         }
 
         sut.GetProgress(PromptDepth.Strangers).ShouldBe(0.5);
@@ -53,7 +53,7 @@ public sealed class GameSessionTests
 
         for (int i = 0; i <= 10; i++)
         {
-            sut.NextPrompt();
+            sut.Next();
         }
 
         sut.GetProgress(PromptDepth.Strangers).ShouldBe(1.0);

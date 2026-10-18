@@ -1,23 +1,10 @@
-.prompt-card {
-    display: flex;
-    background-color: rgb(var(--rgb-alt-bg));
-    min-height: 25dvh;
-    width: min(100%, 400px);
-    border-radius: 20px;
-    padding: 20px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
 
-    user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-
-    &:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-    }
-
-    &:active {
-        transform: translateY(2px);
-    }
+.prompt-card-container {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    overflow: visible;
+    isolation: isolate;
+    touch-action: none;
 }

@@ -17,10 +17,10 @@
   </ItemGroup>
 
   <ItemGroup>
-	  <PackageReference Include="beauo" Version="0.1.0-preview.beta.38" />
-	  <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.10" />
-	  <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.10" PrivateAssets="all" />
-	  <PackageReference Include="AspNetCore.SassCompiler" Version="1.101.0" PrivateAssets="all" />
+	  <PackageReference Include="beauo" Version="0.1.0-preview.beta.48" />
+	  <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.13" />
+	  <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.13" PrivateAssets="all" />
+	  <PackageReference Include="AspNetCore.SassCompiler" Version="1.105.1" PrivateAssets="all" />
   </ItemGroup>
 
   <ItemGroup>
